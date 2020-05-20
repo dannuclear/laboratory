@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:security="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc" xsi:schemaLocation="http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<security:http auto-config="true" access-decision-manager-ref="customAccessDecisionManager">
+		<!-- <security:intercept-url pattern="/api/v1/auth/login" access="permitAll" /> -->
+		<!-- <security:intercept-url pattern="/**" access="denyAll" /> -->
+		<!-- <security:intercept-url pattern="/swagger-resources/**, /swagger-ui.html, /v2/api-docs, /webjars/**" access="permitAll" /> -->
+		<!-- <security:intercept-url pattern="/api/v1/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_LOCAL_ADMIN')" /> -->
+		<security:csrf disabled="true" />
+		<security:custom-filter ref="jwtTokenFilter" before="FORM_LOGIN_FILTER" />
+		<security:cors configuration-source-ref="corsSource" />
+		<security:headers>
+			<!-- <security:header name="X-Frame-Options" value="allow-from *" /> -->
+<!-- 			<security:frame-options policy="ALLOW-FROM" strategy="whitelist" value="*" /> -->
+			<security:frame-options disabled="true" />
+		</security:headers>
+	</security:http>
+
+	<bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
+		<property name="corsConfigurations">
+			<map>
+				<entry key="/**">
+					<bean class="org.springframework.web.cors.CorsConfiguration">
+						<property name="allowCredentials" value="true" />
+						<property name="allowedHeaders">
+							<list>
+								<value>Authorization</value>
+								<value>Content-Type</value>
+							</list>
+						</property>
+						<property name="exposedHeaders">
+							<list>
+								<value>Account-Locked</value>
+								<value>Account-Disabled</value>
+								<value>Bad-Credentials</value>
+							</list>
+						</property>
+						<property name="allowedMethods">
+							<list>
+								<value>POST</value>
+								<value>GET</value>
+								<value>PUT</value>
+								<value>OPTIONS</value>
+								<value>DELETE</value>
+							</list>
+						</property>
+						<property name="allowedOrigins" value="*" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
+	<security:authentication-manager id="authenticationManager">
+		<security:authentication-provider user-service-ref="jwtUserDetailsService">
+			<security:password-encoder hash="bcrypt" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean id="jwtTokenFilter" class="ru.bisoft.laboratory.security.jwt.JwtTokenFilter">
+		<constructor-arg name="jwtTokenProvider" ref="jwtTokenProvider" />
+	</bean>
+
+	<bean id="customAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<constructor-arg>
+			<list>
+				<ref bean="roleVoter" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+		<constructor-arg ref="roleHierarchy" />
+	</bean>
+
+	<bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+		<property name="hierarchy">
+			<value>
+				ROLE_ADMIN > ROLE_DOCUMENT_ADMIN
+				ROLE_ADMIN > ROLE_USER_ADMIN
+				ROLE_ADMIN > ROLE_EQUIPMENT_ADMIN
+				ROLE_ADMIN > ROLE_PROPERTY_ADMIN
+				ROLE_ADMIN > ROLE_SAMPLE_ADMIN
+				ROLE_ADMIN > ROLE_UNIT_ADMIN
+				ROLE_ADMIN > ROLE_SAMPLE_PROPERTY_ADMIN
+				ROLE_ADMIN > ROLE_ORGANIZATION_ADMIN
+				ROLE_ADMIN > ROLE_REPORT_ADMIN
+				ROLE_ADMIN > ROLE_OBJECT_CLASS_ADMIN
+
+				ROLE_PROPERTY_ADMIN > ROLE_PROPERTY_TYPE_ADMIN
+				ROLE_PROPERTY_ADMIN > ROLE_UNIT_ADMIN
+
+				ROLE_SAMPLE_ADMIN > ROLE_SAMPLE_PROPERTY_ADMIN
+
+				ROLE_ORGANIZATION_ADMIN > ROLE_DEPARTMENT_ADMIN
+
+				ROLE_ADMIN > ROLE_EQUIPMENT_VERIFICATION_ADMIN
+				ROLE_ADMIN > ROLE_EQUIPMENT_MAINTENANCE_ADMIN
+
+				ROLE_DOCUMENT_ADMIN > ROLE_DOCUMENT_EQUIPMENT_ADMIN
+			</value>
+		</property>
+	</bean>
+
+	<bean id="methodSecurityExpressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+		<property name="roleHierarchy" ref="roleHierarchy" />
+	</bean>
+
+	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled">
+		<security:expression-handler ref="methodSecurityExpressionHandler" />
+	</security:global-method-security>
+
+	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+</beans>

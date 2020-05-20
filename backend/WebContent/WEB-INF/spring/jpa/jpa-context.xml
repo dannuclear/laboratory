@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+	<!-- Определение пакета с интерфейсами репозиториев данных -->
+	<jpa:repositories base-package="ru.bisoft.laboratory.repository" entity-manager-factory-ref="entityManagerFactory" />
+
+	<!-- Конфигурация менеджера транзакций -->
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- Конфигурация аудирования -->
+
+	<!-- <jpa:auditing auditor-aware-ref="springSecurityAuditorAware" /> -->
+	<!-- <bean id="springSecurityAuditorAware" class="ru.bisoft.audit.SpringSecurityAuditorAware" /> -->
+
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="poolName" value="springHikariCP" />
+		<property name="connectionTestQuery" value="SELECT 1" />
+		<property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
+		<property name="maximumPoolSize" value="5" />
+		<!-- <property name="idleTimeout" value="30000" /> -->
+
+		<property name="dataSourceProperties">
+			<props>
+				<prop key="url">jdbc:postgresql://192.168.23.227:5432/laboratory</prop>
+<!-- 				<prop key="url">jdbc:postgresql://bi-soft.ru:25432/laboratory</prop> -->
+				<prop key="user">postgres</prop>
+				<prop key="password">!Q12345</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<!-- Конфигурация поставщика сущностей -->
+	<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory" name="entityManagerFactory">
+		<property name="packagesToScan" value="ru.bisoft.laboratory.domain">
+		</property>
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</prop>
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.proc.param_null_passing">true</prop>
+
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
