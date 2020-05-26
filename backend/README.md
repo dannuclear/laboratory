@@ -12,6 +12,15 @@ http://192.168.23.129:8080/laboratory/api/v1/auth/refresh-token
 { "refreshToken": "uuid" }
 ```
 
+## Отборы
+http://192.168.23.129:8080/laboratory/api/v1/selections
+
+## Субъекты права (Заявители и организации)
+http://192.168.23.129:8080/laboratory/api/v1/legalEntities
+
+## Заявки
+http://192.168.23.129:8080/laboratory/api/v1/requests
+
 ## Единицы измерения
 http://192.168.23.129:8080/laboratory/api/v1/units
 
@@ -60,7 +69,7 @@ http://192.168.23.129:8080/laboratory/api/v1/equipments/{equipment}/verification
 Требуемые роли: ROLE_EQUIPMENT_VERIFICATION (EQUIPMENT_VERIFICATION_READ, EQUIPMENT_VERIFICATION_WRITE) или ROLE_EQUIPMENT_VERIFICATION_ADMIN или ROLE_ADMIN
 
 ## Т.О. оборудования
-http://192.168.23.129:8080/laboratory/api/v1/equipments/{equipment}/maintenancies
+http://192.168.23.129:8080/laboratory/api/v1/equipments/{equipment}/maintenances
 Требуемые роли: ROLE_EQUIPMENT_MAINTENANCE (EQUIPMENT_MAINTENANCE_READ, EQUIPMENT_MAINTENANCE_WRITE) или ROLE_EQUIPMENT_MAINTENANCE_ADMIN или ROLE_ADMIN
 
 ---------------------------------------------------------

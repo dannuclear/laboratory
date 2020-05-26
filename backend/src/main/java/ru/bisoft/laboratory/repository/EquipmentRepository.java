@@ -15,15 +15,15 @@ import ru.bisoft.laboratory.domain.equipment.Equipment;
 
 @Transactional(readOnly = true)
 public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
-	@EntityGraph(attributePaths = { "verification", "maintenance" })
+	@EntityGraph(attributePaths = { "lastVerification", "lastMaintenance" })
 	Page<Equipment> findByNameContainsIgnoreCase(@Param("name") String name, Pageable p);
 
 	@Override
-	@EntityGraph(attributePaths = { "verification", "maintenance" })
+	@EntityGraph(attributePaths = { "lastVerification", "lastMaintenance" })
 	Page<Equipment> findAll(Pageable pageable);
 
 	@Override
-	@EntityGraph(attributePaths = { "verification", "maintenance" })
+	@EntityGraph(attributePaths = { "lastVerification", "lastMaintenance" })
 	Optional<Equipment> findById(Integer id);
 
 	@Query(value = "update equipment set " + //

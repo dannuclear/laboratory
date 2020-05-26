@@ -21,7 +21,7 @@ import ru.bisoft.laboratory.dto.PagedModel;
 import ru.bisoft.laboratory.service.EquipmentMaintenanceService;
 
 @RestController
-@RequestMapping("equipments/{equipment}/maintenancies")
+@RequestMapping("equipments/{equipment}/maintenances")
 @RequiredArgsConstructor
 public class EquipmentMaintenanceController {
 
