@@ -30,7 +30,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 			errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
 		}
 
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+		ApiError apiError = new ApiError(HttpStatus.OK, ex.getLocalizedMessage(), errors);
+//		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
 		return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
 
 		//return super.handleMethodArgumentNotValid(ex, headers, status, request);

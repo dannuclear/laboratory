@@ -67,35 +67,44 @@ public class ReportController {
 
 		String mimeType = null;
 		StringBuilder fileName = new StringBuilder();
+		
 		switch (format) {
 		case DBF:
 			mimeType = "application/dbf";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		case DOC:
 			mimeType = "application/msword";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		case EXCEL:
 			mimeType = "application/msexcel";
+			fileName.append("report").append('.').append("xlsx");
 			break;
 		case HTML:
 			mimeType = "text/html";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		case ODT:
 			mimeType = "application/vnd.oasis.opendocument.text";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		case PDF:
 			mimeType = "application/pdf";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		case RTF:
 			mimeType = "application/msword";
+			fileName.append("report").append('.').append("docx");
 			break;
 		case XML:
 			mimeType = "text/xml";
+			fileName.append("report").append('.').append(format.getLabel());
 			break;
 		default:
 			break;
 		}
-		fileName.append("report").append('.').append(format.getLabel());
+		
 		return ResponseEntity //
 				.ok() //
 				.header("Content-Type", mimeType + "; charset=UTF-8") //

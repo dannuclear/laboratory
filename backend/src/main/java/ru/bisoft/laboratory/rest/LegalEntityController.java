@@ -1,5 +1,7 @@
 package ru.bisoft.laboratory.rest;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,7 @@ public class LegalEntityController {
 	}
 
 	@PostMapping
-	public void save(@RequestBody LegalEntity newLegalEntity) {
+	public void save(@RequestBody @Valid LegalEntity newLegalEntity) {
 		newLegalEntity.setId(null);
 		legalEntityService.save(newLegalEntity);
 	}

@@ -68,6 +68,9 @@ public class Report {
 	@Column(name = "CREATE_TS")
 	private LocalDateTime createTimestamp;
 
+	@Column(name = "TYPE")
+	private Integer type;
+	
 	@Override
 	public String toString() {
 		return "Отчет [name=" + name + "]";

@@ -8,16 +8,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.bisoft.laboratory.domain.ObjectClass;
-import ru.bisoft.laboratory.domain.ObjectClassProperty;
+import ru.bisoft.laboratory.domain.ObjectClassEquipment;
 
 @Transactional(readOnly = true)
-public interface ObjectClassPropertyRepository extends JpaRepository<ObjectClassProperty, Integer> {
+public interface ObjectClassEquipmentRepository extends JpaRepository<ObjectClassEquipment, Integer> {
 
-	@EntityGraph(attributePaths = { "property.propertyType", "property.unit" })
-	Iterable<ObjectClassProperty> findByObjectClass(ObjectClass objectClass);
+	@EntityGraph(attributePaths = { "equipment.lastVerification", "equipment.lastMaintenance" })
+	Iterable<ObjectClassEquipment> findByObjectClass(ObjectClass objectClass);
 
-	@EntityGraph(attributePaths = { "property.propertyType", "property.unit" })
-	Page<ObjectClassProperty> findByObjectClass(ObjectClass objectClass, Pageable pageable);
+	@EntityGraph(attributePaths = { "equipment.lastVerification", "equipment.lastMaintenance" })
+	Page<ObjectClassEquipment> findByObjectClass(ObjectClass objectClass, Pageable pageable);
 
 	@Modifying
 	@Transactional(readOnly = false)

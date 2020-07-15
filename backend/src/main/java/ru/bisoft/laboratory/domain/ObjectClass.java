@@ -28,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = { "parent", "childs" })
 public class ObjectClass extends CustomEntity {
 
 	@Id
@@ -46,6 +46,9 @@ public class ObjectClass extends CustomEntity {
 
 	@Transient
 	private List<ObjectClassProperty> properties;
+
+	@Transient
+	private List<ObjectClassEquipment> equipments;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_PARENT", referencedColumnName = "ID")
@@ -65,5 +68,15 @@ public class ObjectClass extends CustomEntity {
 		if (parent != null)
 			return parent.getId();
 		return null;
+	}
+
+	public void setParentId(Integer parentId) {
+		if (parent != null)
+			parent.setId(parentId);
+		else if (parentId != null) {
+			parent = new ObjectClass();
+			parent.setId(parentId);
+		} else
+			parent = null;
 	}
 }

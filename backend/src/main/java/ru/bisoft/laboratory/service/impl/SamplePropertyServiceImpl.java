@@ -2,8 +2,10 @@ package ru.bisoft.laboratory.service.impl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -75,5 +77,15 @@ public class SamplePropertyServiceImpl implements SamplePropertyService {
 		Page<SampleProperty> result = samplePropertyRepository.findBySample(sample, pageable);
 		result.getContent().forEach(sp -> sp.setSample(null));
 		return result;
+	}
+	
+	@Override
+	public void deleteBySampleAndIdNotIn(Sample sample, Iterable<Integer> ids) {
+		samplePropertyRepository.deleteBySampleAndIdNotIn(sample, ids);
+	}
+
+	@Override
+	public void deleteBySample(Sample sample) {
+		samplePropertyRepository.deleteBySample(sample);
 	}
 }

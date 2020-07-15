@@ -9,4 +9,8 @@ import ru.bisoft.laboratory.domain.SampleProperty;
 public interface SamplePropertyService extends GuideService<SampleProperty> {
 
 	Page<SampleProperty> findBySample(Sample sample, Pageable pageable);
+
+	void deleteBySampleAndIdNotIn(Sample sample, Iterable<Integer> ids);
+
+	void deleteBySample(Sample sample);
 }

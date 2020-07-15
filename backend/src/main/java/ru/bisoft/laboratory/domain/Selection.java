@@ -3,6 +3,7 @@ package ru.bisoft.laboratory.domain;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -29,7 +31,7 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "SELECTION")
-@ToString
+@ToString(exclude = { "samples" })
 @Getter
 @Setter
 @NoArgsConstructor
@@ -66,4 +68,7 @@ public class Selection extends CustomEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_REQUEST", referencedColumnName = "ID")
 	private Request request;
+
+	@Transient
+	private List<SelectionSample> samples;
 }

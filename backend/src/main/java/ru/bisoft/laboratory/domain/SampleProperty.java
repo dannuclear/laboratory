@@ -2,6 +2,8 @@ package ru.bisoft.laboratory.domain;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,15 +22,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NamedEntityGraph(name = "sampleProperty.bySampleJoins", attributeNodes = { //
+@NamedEntityGraphs(value = { @NamedEntityGraph(name = "sampleProperty.bySampleJoins", attributeNodes = { //
 		@NamedAttributeNode(value = "property", subgraph = "propertySub"), //
-}, //
+		}, //
 		subgraphs = { //
 				@NamedSubgraph(name = "propertySub", attributeNodes = { //
 						@NamedAttributeNode(value = "propertyType"), //
 						@NamedAttributeNode(value = "unit")//
 				}) //
-		})
+		}), @NamedEntityGraph(name = "sampleProperty.fullJoins", attributeNodes = { //
+				@NamedAttributeNode(value = "property", subgraph = "propertySub"), //
+				@NamedAttributeNode(value = "sample") //
+		}, //
+				subgraphs = { //
+						@NamedSubgraph(name = "propertySub", attributeNodes = { //
+								@NamedAttributeNode(value = "propertyType"), //
+								@NamedAttributeNode(value = "unit")//
+						}) //
+				}) })
 
 @Entity
 @Table(name = "SAMPLE_PROPERTY")
@@ -40,6 +52,8 @@ public class SampleProperty extends CustomEntity {
 	@SequenceGenerator(name = "SAMPLE_PROPERTY_GEN_ID", sequenceName = "SAMPLE_PROPERTY_GEN_ID", allocationSize = 1, initialValue = 1)
 	@GeneratedValue(generator = "SAMPLE_PROPERTY_GEN_ID", strategy = SEQUENCE)
 	private Integer id;
+	
+	private BigDecimal value;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_PROPERTY", referencedColumnName = "ID")

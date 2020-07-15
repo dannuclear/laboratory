@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import ru.bisoft.laboratory.domain.ObjectClass;
 import ru.bisoft.laboratory.domain.ObjectClassDocument;
+import ru.bisoft.laboratory.domain.ObjectClassEquipment;
 import ru.bisoft.laboratory.domain.ObjectClassProperty;
 import ru.bisoft.laboratory.dto.PagedModel;
 import ru.bisoft.laboratory.repository.ObjectClassDocumentRepository;
+import ru.bisoft.laboratory.repository.ObjectClassEquipmentRepository;
 import ru.bisoft.laboratory.repository.ObjectClassPropertyRepository;
 import ru.bisoft.laboratory.service.ObjectClassService;
 
@@ -32,6 +34,7 @@ public class ObjectClassController {
 	private final ObjectClassService objectClassService;
 	private final ObjectClassDocumentRepository objectClassDocumentRepository;
 	private final ObjectClassPropertyRepository objectClassPropertyRepository;
+	private final ObjectClassEquipmentRepository objectClassEquipmentRepository;
 
 	@GetMapping("/{objectClass}")
 	public ResponseEntity<ObjectClass> findOne(@PathVariable ObjectClass objectClass) {
@@ -56,17 +59,24 @@ public class ObjectClassController {
 	}
 
 	@GetMapping("/{objectClass}/documents")
-	public ResponseEntity<Iterable<ObjectClassDocument>> documents(@PathVariable ObjectClass objectClass) {
-		Iterable<ObjectClassDocument> result = objectClassDocumentRepository.findByObjectClass(objectClass);
+	public ResponseEntity<Iterable<ObjectClassDocument>> documents(Pageable pageable, @PathVariable ObjectClass objectClass) {
+		Page<ObjectClassDocument> result = objectClassDocumentRepository.findByObjectClass(objectClass, pageable);
 		result.forEach(ocp -> ocp.setObjectClass(null));
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(PagedModel.wrap(result));
 	}
 
 	@GetMapping("/{objectClass}/properties")
-	public ResponseEntity<Iterable<ObjectClassProperty>> properties(@PathVariable ObjectClass objectClass) {
-		Iterable<ObjectClassProperty> result = objectClassPropertyRepository.findByObjectClass(objectClass);
+	public ResponseEntity<Iterable<ObjectClassProperty>> properties(Pageable pageable, @PathVariable ObjectClass objectClass) {
+		Page<ObjectClassProperty> result = objectClassPropertyRepository.findByObjectClass(objectClass, pageable);
 		result.forEach(ocp -> ocp.setObjectClass(null));
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(PagedModel.wrap(result));
+	}
+
+	@GetMapping("/{objectClass}/equipments")
+	public ResponseEntity<Iterable<ObjectClassEquipment>> equipments(Pageable pageable, @PathVariable ObjectClass objectClass) {
+		Page<ObjectClassEquipment> result = objectClassEquipmentRepository.findByObjectClass(objectClass, pageable);
+		result.forEach(ocp -> ocp.setObjectClass(null));
+		return ResponseEntity.ok(PagedModel.wrap(result));
 	}
 
 	@DeleteMapping("/{objectClass}")

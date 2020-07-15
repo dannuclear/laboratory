@@ -1,5 +1,7 @@
 package ru.bisoft.laboratory.service.impl;
 
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,7 +11,9 @@ import org.springframework.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ru.bisoft.laboratory.domain.Sample;
+import ru.bisoft.laboratory.domain.SampleProperty;
 import ru.bisoft.laboratory.repository.SampleRepository;
+import ru.bisoft.laboratory.service.SamplePropertyService;
 import ru.bisoft.laboratory.service.SampleService;
 
 @Log4j2
@@ -19,6 +23,7 @@ import ru.bisoft.laboratory.service.SampleService;
 public class SampleServiceImpl implements SampleService {
 
 	private final SampleRepository sampleRepository;
+	private final SamplePropertyService samplePropertyService;
 
 	@Override
 	@PreAuthorize("hasAuthority('SAMPLE_WRITE') or hasRole('SAMPLE_ADMIN')")
@@ -46,7 +51,18 @@ public class SampleServiceImpl implements SampleService {
 	@PreAuthorize("hasAuthority('SAMPLE_WRITE') or hasRole('SAMPLE_ADMIN')")
 	public Sample save(Sample entity) {
 		log.info("Сохраняем пробы/образцы {}", entity);
-		return sampleRepository.save(entity);
+		Sample result = sampleRepository.save(entity);
+
+		// Сохраняем показатели пробы по пробе
+		if (entity.getProperties() != null) {
+			if (entity.getProperties().size() == 0)
+				samplePropertyService.deleteBySample(entity);
+			else
+				samplePropertyService.deleteBySampleAndIdNotIn(entity, entity.getProperties().stream().map(SampleProperty::getId).collect(Collectors.toList()));
+			entity.getProperties().forEach(de -> de.setSample(entity));
+			samplePropertyService.saveAll(entity.getProperties());
+		}
+		return result;
 	}
 
 	@Override

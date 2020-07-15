@@ -12,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ru.bisoft.laboratory.domain.ObjectClass;
 import ru.bisoft.laboratory.domain.ObjectClassDocument;
+import ru.bisoft.laboratory.domain.ObjectClassEquipment;
 import ru.bisoft.laboratory.domain.ObjectClassProperty;
 import ru.bisoft.laboratory.repository.ObjectClassDocumentRepository;
+import ru.bisoft.laboratory.repository.ObjectClassEquipmentRepository;
 import ru.bisoft.laboratory.repository.ObjectClassPropertyRepository;
 import ru.bisoft.laboratory.repository.ObjectClassRepository;
 import ru.bisoft.laboratory.service.ObjectClassService;
@@ -27,6 +29,7 @@ public class ObjectClassServiceImpl implements ObjectClassService {
 	private final ObjectClassRepository objectClassRepository;
 	private final ObjectClassDocumentRepository objectClassDocumentRepository;
 	private final ObjectClassPropertyRepository objectClassPropertyRepository;
+	private final ObjectClassEquipmentRepository objectClassEquipmentRepository;
 
 	@Override
 	@PreAuthorize("hasAuthority('OBJECT_CLASS_WRITE') or hasRole('OBJECT_CLASS_ADMIN')")
@@ -71,9 +74,20 @@ public class ObjectClassServiceImpl implements ObjectClassService {
 				objectClassPropertyRepository.deleteByObjectClass(entity);
 			else
 				objectClassPropertyRepository.deleteByObjectClassAndIdNotIn(entity, entity.getProperties().stream().map(ObjectClassProperty::getId).collect(Collectors.toList()));
-			entity.getDocuments().forEach(de -> de.setObjectClass(entity));
+			entity.getProperties().forEach(de -> de.setObjectClass(entity));
 			objectClassPropertyRepository.saveAll(entity.getProperties());
 		}
+
+		// Сохраняем оборудование
+		if (entity.getEquipments() != null) {
+			if (entity.getEquipments().size() == 0)
+				objectClassEquipmentRepository.deleteByObjectClass(entity);
+			else
+				objectClassEquipmentRepository.deleteByObjectClassAndIdNotIn(entity, entity.getEquipments().stream().map(ObjectClassEquipment::getId).collect(Collectors.toList()));
+			entity.getEquipments().forEach(de -> de.setObjectClass(entity));
+			objectClassEquipmentRepository.saveAll(entity.getEquipments());
+		}
+
 		return result;
 	}
 

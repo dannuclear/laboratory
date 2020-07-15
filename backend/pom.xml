@@ -149,6 +149,12 @@
 			<artifactId>MathParser.org-mXparser</artifactId>
 			<version>4.3.3</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports-fonts -->
+		<dependency>
+			<groupId>com.mpobjects.jasperreports.font</groupId>
+			<artifactId>jasperreports-fonts-liberation</artifactId>
+			<version>2.00.4</version>
+		</dependency>
 
 		<!-- <dependency> -->
 		<!-- <groupId>io.springfox</groupId> -->

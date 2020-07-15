@@ -35,6 +35,7 @@ public class SamplePropertyController {
 	@GetMapping
 	public ResponseEntity<PagedModel<SampleProperty>> findBySample(Sample sample, Pageable pageable) {
 		Page<SampleProperty> page = samplePropertyService.findBySample(sample, pageable);
+		page.getContent().forEach(sp->sp.setSample(null));
 		return ResponseEntity.ok(PagedModel.wrap(page));
 	}
 

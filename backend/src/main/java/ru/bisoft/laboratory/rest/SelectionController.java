@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import ru.bisoft.laboratory.domain.Selection;
+import ru.bisoft.laboratory.domain.SelectionSample;
 import ru.bisoft.laboratory.dto.PagedModel;
+import ru.bisoft.laboratory.repository.SelectionSampleRepository;
 import ru.bisoft.laboratory.service.SelectionService;
 
 @RestController
@@ -23,6 +25,7 @@ import ru.bisoft.laboratory.service.SelectionService;
 public class SelectionController {
 
 	private final SelectionService selectionService;
+	private final SelectionSampleRepository selectionSampleRepository;
 
 	@GetMapping("/{selection}")
 	public ResponseEntity<Selection> findOne(@PathVariable Selection selection) {
@@ -49,5 +52,12 @@ public class SelectionController {
 	@DeleteMapping("/{selection}")
 	public void delete(@PathVariable Selection selection) {
 		selectionService.delete(selection);
+	}
+
+	@GetMapping("/{selection}/samples")
+	public ResponseEntity<Iterable<SelectionSample>> samples(Pageable pageable, @PathVariable Selection selection) {
+		Page<SelectionSample> result = selectionSampleRepository.findBySelection(selection, pageable);
+		result.forEach(ps -> ps.setSelection(null));
+		return ResponseEntity.ok(PagedModel.wrap(result));
 	}
 }

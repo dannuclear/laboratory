@@ -1,5 +1,7 @@
 package ru.bisoft.laboratory.service.impl;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import ru.bisoft.laboratory.domain.Selection;
+import ru.bisoft.laboratory.domain.SelectionSample;
 import ru.bisoft.laboratory.repository.SelectionRepository;
+import ru.bisoft.laboratory.repository.SelectionSampleRepository;
 import ru.bisoft.laboratory.service.SelectionService;
 
 @Log4j2
@@ -21,6 +25,7 @@ import ru.bisoft.laboratory.service.SelectionService;
 public class SelectionServiceImpl implements SelectionService {
 
 	private final SelectionRepository selectionRepository;
+	private final SelectionSampleRepository selectionSampleRepository;
 
 	@Override
 	@PreAuthorize("hasAuthority('SELECTION_WRITE') or hasRole('SELECTION_ADMIN')")
@@ -45,7 +50,18 @@ public class SelectionServiceImpl implements SelectionService {
 	@Override
 	@PreAuthorize("hasAuthority('SELECTION_WRITE') or hasRole('SELECTION_ADMIN')")
 	public Selection save(Selection entity) {
-		return selectionRepository.save(entity);
+		Selection result = selectionRepository.save(entity);
+
+		// Сохраняем пробы по акту отбора
+		if (entity.getSamples() != null) {
+			if (entity.getSamples().size() == 0)
+				selectionSampleRepository.deleteBySelection(entity);
+			else
+				selectionSampleRepository.deleteBySelectionAndIdNotIn(entity, entity.getSamples().stream().map(SelectionSample::getId).collect(Collectors.toList()));
+			entity.getSamples().forEach(de -> de.setSelection(entity));
+			selectionSampleRepository.saveAll(entity.getSamples());
+		}
+		return result;
 	}
 
 	@Override
