@@ -36,6 +36,9 @@ public class LegalEntity {
 	@INNValid
 	private String INN;
 
+	@Column(name = "PHONE", length = 20)
+	private String phone;
+
 	/**
 	 * Юридический адрес
 	 */
@@ -43,8 +46,8 @@ public class LegalEntity {
 	private String legalAddress;
 
 	/**
-	 * Юридический адрес
+	 * Фактический адрес
 	 */
-	@Column(name = "ACTUAL_ADDRESS", length = 500)
-	private String actualAddress;
+	@Column(name = "FACTUAL_ADDRESS", length = 500)
+	private String factualAddress;
 }

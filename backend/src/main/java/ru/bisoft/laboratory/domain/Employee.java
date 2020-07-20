@@ -40,4 +40,8 @@ public class Employee {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_DEPARTMENT", referencedColumnName = "ID")
 	private Department department;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_POST", referencedColumnName = "ID")
+	private Post post;
 }

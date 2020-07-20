@@ -65,16 +65,16 @@ public class EquipmentServiceImpl implements EquipmentService {
 			documentEquipmentService.saveAll(entity.getDocumentEquipments());
 		}
 		// Сохраняем технические обслуживания по оборудованию
-		if (entity.getMaintenances() != null) {
-			equipmentMaintenanceService.deleteByEquipmentAndIdNotIn(entity, entity.getMaintenances().stream().map(EquipmentMaintenance::getId).collect(Collectors.toList()));
-			entity.getMaintenances().forEach(de -> de.setEquipment(entity));
-			equipmentMaintenanceService.saveAll(entity.getMaintenances());
+		if (entity.getMaintenanceList() != null) {
+			equipmentMaintenanceService.deleteByEquipmentAndIdNotIn(entity, entity.getMaintenanceList().stream().map(EquipmentMaintenance::getId).collect(Collectors.toList()));
+			entity.getMaintenanceList().forEach(de -> de.setEquipment(entity));
+			equipmentMaintenanceService.saveAll(entity.getMaintenanceList());
 		}
 		// Сохраняем поверки по оборудованию
-		if (entity.getVerifications() != null) {
-			equipmentVerificationService.deleteByEquipmentAndIdNotIn(entity, entity.getVerifications().stream().map(EquipmentVerification::getId).collect(Collectors.toList()));
-			entity.getVerifications().forEach(de -> de.setEquipment(entity));
-			equipmentVerificationService.saveAll(entity.getVerifications());
+		if (entity.getVerificationList() != null) {
+			equipmentVerificationService.deleteByEquipmentAndIdNotIn(entity, entity.getVerificationList().stream().map(EquipmentVerification::getId).collect(Collectors.toList()));
+			entity.getVerificationList().forEach(de -> de.setEquipment(entity));
+			equipmentVerificationService.saveAll(entity.getVerificationList());
 		}
 		equipmentRepository.updateMaintenanceAndVerification(entity);
 		return result;

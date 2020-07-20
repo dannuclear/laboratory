@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.bisoft.laboratory.domain.CustomEntity;
 import ru.bisoft.laboratory.domain.DocumentEquipment;
+import ru.bisoft.laboratory.domain.EmployeeEquipment;
 
 @Entity
 @Table(name = "EQUIPMENT")
@@ -56,6 +57,21 @@ public class Equipment extends CustomEntity {
 	@Column(name = "NOTE")
 	private String note;
 
+	@Column(name = "CHARACTERISTICS")
+	private String characteristics;
+
+	@Column(name = "VERIFICATION_INTERVAL")
+	private String verificationInterval;
+
+	@Column(name = "MAINTENANCE_INTERVAL")
+	private String maintenanceInterval;
+
+	@Column(name = "START_USE_DATE")
+	private String startUseDate;
+
+	@Column(name = "END_USE_DATE")
+	private String endUseDate;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_EQUIPMENT_VERIFICATION", referencedColumnName = "ID", updatable = false, insertable = false)
 	private EquipmentVerification lastVerification;
@@ -68,8 +84,11 @@ public class Equipment extends CustomEntity {
 	private List<DocumentEquipment> documentEquipments;
 
 	@Transient
-	private List<EquipmentMaintenance> maintenances;
+	private List<EmployeeEquipment> employeeEquipments;
 
 	@Transient
-	private List<EquipmentVerification> verifications;
+	private List<EquipmentMaintenance> maintenanceList;
+
+	@Transient
+	private List<EquipmentVerification> verificationList;
 }
