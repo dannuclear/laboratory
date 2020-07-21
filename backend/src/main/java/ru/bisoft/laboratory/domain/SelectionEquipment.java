@@ -15,17 +15,17 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Builder
 @AllArgsConstructor
 public class SelectionEquipment extends CustomEntity {
-	@Id
-	@Column(name = "ID")
-	@SequenceGenerator(name = "SELECTION_EQUIPMENT_GEN_ID", sequenceName = "SELECTION_EQUIPMENT_GEN_ID", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "SELECTION_EQUIPMENT_GEN_ID", strategy = SEQUENCE)
-	private Integer id;
+    @Id
+    @Column(name = "ID")
+    @SequenceGenerator(name = "SELECTION_EQUIPMENT_GEN_ID", sequenceName = "SELECTION_EQUIPMENT_GEN_ID", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "SELECTION_EQUIPMENT_GEN_ID", strategy = SEQUENCE)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_SELECTION", referencedColumnName = "ID")
-	private Selection selection;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_SELECTION", referencedColumnName = "ID")
+    private Selection selection;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_EQUIPMENT", referencedColumnName = "ID")
-	private Equipment equipment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_EQUIPMENT", referencedColumnName = "ID")
+    private Equipment equipment;
 }

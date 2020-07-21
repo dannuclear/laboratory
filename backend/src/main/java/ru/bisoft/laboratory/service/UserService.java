@@ -4,9 +4,9 @@ import ru.bisoft.laboratory.domain.auth.User;
 
 public interface UserService extends GuideService<User> {
 
-	User create(String username);
+    User create(String username);
 
-	User findByUsername(String username);
+    User findByUsername(String username);
 
-	User register(User user);
+    User register(User user);
 }

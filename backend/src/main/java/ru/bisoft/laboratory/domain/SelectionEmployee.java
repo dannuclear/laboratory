@@ -1,7 +1,6 @@
 package ru.bisoft.laboratory.domain;
 
 import lombok.*;
-import ru.bisoft.laboratory.domain.equipment.Equipment;
 
 import javax.persistence.*;
 
@@ -15,17 +14,17 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Builder
 @AllArgsConstructor
 public class SelectionEmployee extends CustomEntity {
-	@Id
-	@Column(name = "ID")
-	@SequenceGenerator(name = "SELECTION_EMPLOYEE_GEN_ID", sequenceName = "SELECTION_EMPLOYEE_GEN_ID", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "SELECTION_EMPLOYEE_GEN_ID", strategy = SEQUENCE)
-	private Integer id;
+    @Id
+    @Column(name = "ID")
+    @SequenceGenerator(name = "SELECTION_EMPLOYEE_GEN_ID", sequenceName = "SELECTION_EMPLOYEE_GEN_ID", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "SELECTION_EMPLOYEE_GEN_ID", strategy = SEQUENCE)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_SELECTION", referencedColumnName = "ID")
-	private Selection selection;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_SELECTION", referencedColumnName = "ID")
+    private Selection selection;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_EMPLOYEE", referencedColumnName = "ID")
-	private Employee employee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_EMPLOYEE", referencedColumnName = "ID")
+    private Employee employee;
 }

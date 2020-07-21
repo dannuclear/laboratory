@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GuideUtils {
-	public static Pageable DEFAULT_PAGE;
+    public static Pageable DEFAULT_PAGE;
 
-	@Value("${rest.guide.default-page-size}")
-	public void setDefaultPageSize(Integer defaultPageSize) {
-		GuideUtils.DEFAULT_PAGE = PageRequest.of(0, defaultPageSize);
-	}
+    @Value("${rest.guide.default-page-size}")
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        GuideUtils.DEFAULT_PAGE = PageRequest.of(0, defaultPageSize);
+    }
 }
