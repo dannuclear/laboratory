@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "EMPLOYEE")
@@ -38,4 +39,13 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_POST", referencedColumnName = "ID")
     private Post post;
+
+    @Transient
+    private List<EmployeeDocument> employeeDocuments;
+
+    @Transient
+    private List<EmployeeEquipment> employeeEquipments;
+
+    @Transient
+    private List<EmployeeProperty> employeeProperties;
 }

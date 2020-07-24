@@ -50,4 +50,10 @@ public class Document extends CustomEntity {
     //	@OneToMany(mappedBy = "document", fetch = FetchType.LAZY)
     @Transient
     private List<DocumentEquipment> documentEquipments;
+
+    @Transient
+    private List<EmployeeDocument> employeeDocuments;
+
+    @Transient
+    private List<DocumentProperty> documentProperties;
 }

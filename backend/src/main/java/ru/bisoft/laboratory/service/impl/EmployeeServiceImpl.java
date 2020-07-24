@@ -7,10 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import ru.bisoft.laboratory.domain.Employee;
-import ru.bisoft.laboratory.domain.Organization;
+import ru.bisoft.laboratory.domain.*;
 import ru.bisoft.laboratory.repository.EmployeeRepository;
+import ru.bisoft.laboratory.service.EmployeeDocumentService;
+import ru.bisoft.laboratory.service.EmployeeEquipmentService;
+import ru.bisoft.laboratory.service.EmployeePropertyService;
 import ru.bisoft.laboratory.service.EmployeeService;
+
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -19,6 +23,9 @@ import ru.bisoft.laboratory.service.EmployeeService;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeDocumentService employeeDocumentService;
+    private final EmployeePropertyService employeePropertyService;
+    private final EmployeeEquipmentService employeeEquipmentService;
 
     @Override
     @PreAuthorize("hasAuthority('EMPLOYEE_WRITE') or hasRole('EMPLOYEE_ADMIN')")
@@ -47,7 +54,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     @PreAuthorize("hasAuthority('EMPLOYEE_WRITE') or hasRole('EMPLOYEE_ADMIN')")
     public Employee save(Employee entity) {
         log.info("Сохраняем служащего {}", entity);
-        return employeeRepository.save(entity);
+        Employee result = employeeRepository.save(entity);
+
+        // Сохраняем документы по служащему
+        if (entity.getEmployeeDocuments() != null) {
+            employeeDocumentService.deleteByEmployeeAndIdNotIn(entity, entity.getEmployeeDocuments().stream().map(EmployeeDocument::getId).collect(Collectors.toList()));
+            entity.getEmployeeDocuments().forEach(ed -> ed.setEmployee(entity));
+            employeeDocumentService.saveAll(entity.getEmployeeDocuments());
+        }
+        // Сохраняем свойства по служащему
+        if (entity.getEmployeeProperties() != null) {
+            employeePropertyService.deleteByEmployeeAndIdNotIn(entity, entity.getEmployeeProperties().stream().map(EmployeeProperty::getId).collect(Collectors.toList()));
+            entity.getEmployeeProperties().forEach(ed -> ed.setEmployee(entity));
+            employeePropertyService.saveAll(entity.getEmployeeProperties());
+        }
+        // Сохраняем оборудование по служащему
+        if (entity.getEmployeeEquipments() != null) {
+            employeeEquipmentService.deleteByEmployeeAndIdNotIn(entity, entity.getEmployeeEquipments().stream().map(EmployeeEquipment::getId).collect(Collectors.toList()));
+            entity.getEmployeeEquipments().forEach(ed -> ed.setEmployee(entity));
+            employeeEquipmentService.saveAll(entity.getEmployeeEquipments());
+        }
+
+        return result;
     }
 
     @Override

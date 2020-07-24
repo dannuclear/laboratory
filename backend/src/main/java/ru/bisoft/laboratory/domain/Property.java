@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -45,4 +46,13 @@ public class Property extends CustomEntity {
     @JoinColumn(name = "ID_PROPERTY_TYPE", referencedColumnName = "ID")
     @NotNull(message = "Тип параметра должен быть задан")
     private PropertyType propertyType;
+
+    @Transient
+    private List<DocumentProperty> documentProperties;
+
+    @Transient
+    private List<EmployeeProperty> employeeProperties;
+
+    @Transient
+    private List<SampleProperty> sampleProperties;
 }
