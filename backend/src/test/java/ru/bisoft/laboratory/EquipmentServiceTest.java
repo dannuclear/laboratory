@@ -52,10 +52,10 @@ public class EquipmentServiceTest {
 		equ.setName("Тестовое оборудование 2");
 
 		EquipmentVerification ev = EquipmentVerification.builder().date(LocalDate.now()).number("3231").build();
-		equ.setVerifications(Arrays.asList(ev));
+		equ.setVerificationList(Arrays.asList(ev));
 
 		EquipmentMaintenance em = EquipmentMaintenance.builder().date(LocalDate.now()).number("3231").build();
-		equ.setMaintenances(Arrays.asList(em));
+		equ.setMaintenanceList(Arrays.asList(em));
 
 		Document document = documentService.findById(42);
 		assertNotNull(document);
@@ -74,8 +74,8 @@ public class EquipmentServiceTest {
 		List<EquipmentMaintenance> eml = equipmentMaintenanceService.findByEquipment(equ, PageRequest.of(0, 999)).getContent();
 		assertThat(eml.size() == 1);
 
-		equ.setMaintenances(Collections.emptyList());
-		equ.setVerifications(Collections.emptyList());
+		equ.setMaintenanceList(Collections.emptyList());
+		equ.setVerificationList(Collections.emptyList());
 		equ.setDocumentEquipments(Collections.emptyList());
 
 		equipmentService.save(equ);

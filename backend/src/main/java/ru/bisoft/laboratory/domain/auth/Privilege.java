@@ -1,15 +1,15 @@
 package ru.bisoft.laboratory.domain.auth;
 
 public enum Privilege {
-	READ("Чтение"), WRITE("Запись");
-	
-	private String label;
+    READ("Чтение"), WRITE("Запись");
 
-	private Privilege(String label) {
-		this.label = label;
-	}
+    private String label;
 
-	public String getLabel() {
-		return label;
-	}
+    Privilege(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

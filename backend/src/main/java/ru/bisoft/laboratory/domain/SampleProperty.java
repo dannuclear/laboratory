@@ -1,45 +1,32 @@
 package ru.bisoft.laboratory.domain;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
-import javax.persistence.NamedSubgraph;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NamedEntityGraphs(value = { @NamedEntityGraph(name = "sampleProperty.bySampleJoins", attributeNodes = { //
-		@NamedAttributeNode(value = "property", subgraph = "propertySub"), //
-		}, //
-		subgraphs = { //
-				@NamedSubgraph(name = "propertySub", attributeNodes = { //
-						@NamedAttributeNode(value = "propertyType"), //
-						@NamedAttributeNode(value = "unit")//
-				}) //
-		}), @NamedEntityGraph(name = "sampleProperty.fullJoins", attributeNodes = { //
-				@NamedAttributeNode(value = "property", subgraph = "propertySub"), //
-				@NamedAttributeNode(value = "sample") //
-		}, //
-				subgraphs = { //
-						@NamedSubgraph(name = "propertySub", attributeNodes = { //
-								@NamedAttributeNode(value = "propertyType"), //
-								@NamedAttributeNode(value = "unit")//
-						}) //
-				}) })
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+import static javax.persistence.GenerationType.SEQUENCE;
+
+@NamedEntityGraphs(value = {@NamedEntityGraph(name = "sampleProperty.bySampleJoins", attributeNodes = { //
+        @NamedAttributeNode(value = "property", subgraph = "propertySub"), //
+}, //
+        subgraphs = { //
+                @NamedSubgraph(name = "propertySub", attributeNodes = { //
+                        @NamedAttributeNode(value = "propertyType"), //
+                        @NamedAttributeNode(value = "unit")//
+                }) //
+        }), @NamedEntityGraph(name = "sampleProperty.fullJoins", attributeNodes = { //
+        @NamedAttributeNode(value = "property", subgraph = "propertySub"), //
+        @NamedAttributeNode(value = "sample") //
+}, //
+        subgraphs = { //
+                @NamedSubgraph(name = "propertySub", attributeNodes = { //
+                        @NamedAttributeNode(value = "propertyType"), //
+                        @NamedAttributeNode(value = "unit")//
+                }) //
+        })})
 
 @Entity
 @Table(name = "SAMPLE_PROPERTY")
@@ -47,19 +34,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SampleProperty extends CustomEntity {
-	@Id
-	@Column(name = "ID")
-	@SequenceGenerator(name = "SAMPLE_PROPERTY_GEN_ID", sequenceName = "SAMPLE_PROPERTY_GEN_ID", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "SAMPLE_PROPERTY_GEN_ID", strategy = SEQUENCE)
-	private Integer id;
-	
-	private BigDecimal value;
+    @Id
+    @Column(name = "ID")
+    @SequenceGenerator(name = "SAMPLE_PROPERTY_GEN_ID", sequenceName = "SAMPLE_PROPERTY_GEN_ID", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "SAMPLE_PROPERTY_GEN_ID", strategy = SEQUENCE)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_PROPERTY", referencedColumnName = "ID")
-	private Property property;
+    private BigDecimal value;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_SAMPLE", referencedColumnName = "ID")
-	private Sample sample;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PROPERTY", referencedColumnName = "ID")
+    private Property property;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_SAMPLE", referencedColumnName = "ID")
+    private Sample sample;
 }

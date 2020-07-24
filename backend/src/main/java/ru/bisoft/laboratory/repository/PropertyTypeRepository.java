@@ -5,10 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.bisoft.laboratory.domain.PropertyType;
 
 @Transactional(readOnly = true)
 public interface PropertyTypeRepository extends JpaRepository<PropertyType, Integer> {
-	Page<PropertyType> findByNameContainsIgnoreCase(@Param("name") String name, Pageable p);
+    Page<PropertyType> findByNameContainsIgnoreCase(@Param("name") String name, Pageable p);
 }

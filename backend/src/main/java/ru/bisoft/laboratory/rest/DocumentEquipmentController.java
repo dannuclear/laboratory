@@ -1,61 +1,53 @@
 package ru.bisoft.laboratory.rest;
 
-import javax.validation.Valid;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import ru.bisoft.laboratory.domain.Document;
 import ru.bisoft.laboratory.domain.DocumentEquipment;
 import ru.bisoft.laboratory.domain.equipment.Equipment;
 import ru.bisoft.laboratory.dto.PagedModel;
 import ru.bisoft.laboratory.service.DocumentEquipmentService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class DocumentEquipmentController {
 
-	private final DocumentEquipmentService equipmentDocumentService;
+    private final DocumentEquipmentService equipmentDocumentService;
 
-	@GetMapping("documents/{document}/equipments/{equipmentDocument}")
-	public ResponseEntity<DocumentEquipment> findOne(@PathVariable DocumentEquipment equipmentDocument) {
-		return ResponseEntity.ok(equipmentDocument);
-	}
+    @GetMapping("documents/{document}/equipments/{equipmentDocument}")
+    public ResponseEntity<DocumentEquipment> findOne(@PathVariable DocumentEquipment equipmentDocument) {
+        return ResponseEntity.ok(equipmentDocument);
+    }
 
-	@RequestMapping("documents/{document}/equipments")
-	public ResponseEntity<PagedModel<DocumentEquipment>> findByDocument(Document document, Pageable pageable) {
-		Page<DocumentEquipment> page = equipmentDocumentService.findByDocument(document, pageable);
-		return ResponseEntity.ok(PagedModel.wrap(page));
-	}
+    @RequestMapping("documents/{document}/equipments")
+    public ResponseEntity<PagedModel<DocumentEquipment>> findByDocument(Document document, Pageable pageable) {
+        Page<DocumentEquipment> page = equipmentDocumentService.findByDocument(document, pageable);
+        return ResponseEntity.ok(PagedModel.wrap(page));
+    }
 
-	@RequestMapping("equipments/{equipment}/documents")
-	public ResponseEntity<PagedModel<DocumentEquipment>> findByEquipment(Equipment equipment, Pageable pageable) {
-		Page<DocumentEquipment> page = equipmentDocumentService.findByEquipment(equipment, pageable);
-		return ResponseEntity.ok(PagedModel.wrap(page));
-	}
+    @RequestMapping("equipments/{equipment}/documents")
+    public ResponseEntity<PagedModel<DocumentEquipment>> findByEquipment(Equipment equipment, Pageable pageable) {
+        Page<DocumentEquipment> page = equipmentDocumentService.findByEquipment(equipment, pageable);
+        return ResponseEntity.ok(PagedModel.wrap(page));
+    }
 
-	@PostMapping("documents/{document}/equipments")
-	public DocumentEquipment save(@Valid @RequestBody final DocumentEquipment equipmentDocument) {
-		return equipmentDocumentService.save(equipmentDocument);
-	}
+    @PostMapping("documents/{document}/equipments")
+    public DocumentEquipment save(@Valid @RequestBody final DocumentEquipment equipmentDocument) {
+        return equipmentDocumentService.save(equipmentDocument);
+    }
 
-	@PutMapping("documents/{document}/equipments/{equipmentDocument}")
-	public DocumentEquipment save(@PathVariable DocumentEquipment equipmentDocument, @Valid @RequestBody DocumentEquipment newDocumentEquipment) {
-		return equipmentDocumentService.save(newDocumentEquipment);
-	}
+    @PutMapping("documents/{document}/equipments/{equipmentDocument}")
+    public DocumentEquipment save(@PathVariable DocumentEquipment equipmentDocument, @Valid @RequestBody DocumentEquipment newDocumentEquipment) {
+        return equipmentDocumentService.save(newDocumentEquipment);
+    }
 
-	@DeleteMapping("documents/{document}/equipments/{equipmentDocument}")
-	public void delete(@PathVariable DocumentEquipment equipmentDocument) {
-		equipmentDocumentService.delete(equipmentDocument);
-	}
+    @DeleteMapping("documents/{document}/equipments/{equipmentDocument}")
+    public void delete(@PathVariable DocumentEquipment equipmentDocument) {
+        equipmentDocumentService.delete(equipmentDocument);
+    }
 }
