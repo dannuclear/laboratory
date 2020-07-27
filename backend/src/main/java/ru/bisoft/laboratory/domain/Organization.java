@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Entity
 @Table(name = "ORGANIZATION")
 @Getter
@@ -16,6 +18,8 @@ import java.util.List;
 @ToString
 public class Organization {
     @Id
+    @SequenceGenerator(name = "ORGANIZATION_GEN_ID", sequenceName = "ORGANIZATION_GEN_ID", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "ORGANIZATION_GEN_ID", strategy = SEQUENCE)
     @Column(name = "id")
     private Integer id;
 
