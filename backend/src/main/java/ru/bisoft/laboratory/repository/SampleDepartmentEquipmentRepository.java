@@ -7,17 +7,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bisoft.laboratory.domain.SampleDepartment;
-import ru.bisoft.laboratory.domain.SampleDepartmentEmployee;
 import ru.bisoft.laboratory.domain.SampleDepartmentEquipment;
 import ru.bisoft.laboratory.domain.equipment.Equipment;
 
 @Transactional(readOnly = true)
 public interface SampleDepartmentEquipmentRepository extends JpaRepository<SampleDepartmentEquipment, Integer> {
     @EntityGraph(attributePaths = {"sampleDepartment"})
-    Page<SampleDepartmentEmployee> findByEquipment(Equipment equipment, Pageable p);
+    Page<SampleDepartmentEquipment> findByEquipment(Equipment equipment, Pageable p);
 
     @EntityGraph(attributePaths = {"equipment"})
-    Page<SampleDepartmentEmployee> findBySampleDepartment(SampleDepartment sampleDepartment, Pageable p);
+    Page<SampleDepartmentEquipment> findBySampleDepartment(SampleDepartment sampleDepartment, Pageable p);
 
     @Modifying
     @Transactional(readOnly = false)
@@ -25,7 +24,7 @@ public interface SampleDepartmentEquipmentRepository extends JpaRepository<Sampl
 
     @Modifying
     @Transactional(readOnly = false)
-    void deleteBySampleSampleDepartment(SampleDepartment sampleDepartment);
+    void deleteBySampleDepartment(SampleDepartment sampleDepartment);
 
     @Modifying
     @Transactional(readOnly = false)
