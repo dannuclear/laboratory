@@ -56,4 +56,7 @@ public class Document extends CustomEntity {
 
     @Transient
     private List<DocumentProperty> documentProperties;
+
+    @Transient
+    private List<ExpertiseDocument> expertiseDocuments;
 }
