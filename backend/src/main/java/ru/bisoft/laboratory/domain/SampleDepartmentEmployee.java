@@ -1,7 +1,6 @@
 package ru.bisoft.laboratory.domain;
 
 import lombok.*;
-import ru.bisoft.laboratory.domain.equipment.Equipment;
 
 import javax.persistence.*;
 
@@ -27,5 +26,5 @@ public class SampleDepartmentEmployee extends CustomEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_EMPLOYEE", referencedColumnName = "ID")
-    private Equipment equipment;
+    private Employee employee;
 }

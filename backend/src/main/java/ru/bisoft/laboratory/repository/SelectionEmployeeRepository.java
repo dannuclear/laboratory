@@ -6,16 +6,16 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bisoft.laboratory.domain.Employee;
 import ru.bisoft.laboratory.domain.Selection;
 import ru.bisoft.laboratory.domain.SelectionEmployee;
-import ru.bisoft.laboratory.domain.equipment.Equipment;
 
 @Transactional(readOnly = true)
 public interface SelectionEmployeeRepository extends JpaRepository<SelectionEmployee, Integer> {
-	@EntityGraph(attributePaths = { "selection" })
-	Page<SelectionEmployee> findByEquipment(Equipment equipment, Pageable p);
+	@EntityGraph(attributePaths = { "selection.request" })
+	Page<SelectionEmployee> findByEmployee(Employee employee, Pageable p);
 
-	@EntityGraph(attributePaths = { "employee" })
+	@EntityGraph(attributePaths = { "employee.organization", "employee.post", "employee.department" })
 	Page<SelectionEmployee> findBySelection(Selection selection, Pageable p);
 
 	@Modifying
@@ -28,9 +28,9 @@ public interface SelectionEmployeeRepository extends JpaRepository<SelectionEmpl
 
 	@Modifying
 	@Transactional(readOnly = false)
-	void deleteByEquipmentAndIdNotIn(Equipment equipment, Iterable<Integer> ids);
+	void deleteByEmployeeAndIdNotIn(Employee employee, Iterable<Integer> ids);
 
 	@Modifying
 	@Transactional(readOnly = false)
-	void deleteByEquipment(Equipment equipment);
+	void deleteByEmployee(Employee employee);
 }

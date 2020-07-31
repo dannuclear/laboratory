@@ -15,9 +15,9 @@ import ru.bisoft.laboratory.service.ControlTypeService;
 @Service
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('CONTROLTYPE_ADMIN')")
-public class ControlTypeImpl implements ControlTypeService {
+public class ControlTypeServiceImpl implements ControlTypeService {
 
-    ControlTypeRepository controlTypeRepository;
+    private final ControlTypeRepository controlTypeRepository;
 
     @Override
     @PreAuthorize("hasAuthority('CONTROLTYPE_WRITE') or hasRole('CONTROLTYPE_ADMIN')")

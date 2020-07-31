@@ -17,6 +17,7 @@ import ru.bisoft.laboratory.service.EquipmentMaintenanceService;
 import ru.bisoft.laboratory.service.EquipmentService;
 import ru.bisoft.laboratory.service.EquipmentVerificationService;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -59,19 +60,19 @@ public class EquipmentServiceImpl implements EquipmentService {
         Equipment result = equipmentRepository.save(entity);
         // Сохраняем документы по оборудованию
         if (entity.getDocumentEquipments() != null) {
-            documentEquipmentService.deleteByEquipmentAndIdNotIn(entity, entity.getDocumentEquipments().stream().map(DocumentEquipment::getId).collect(Collectors.toList()));
+            documentEquipmentService.deleteByEquipmentAndIdNotIn(entity, entity.getDocumentEquipments().stream().map(DocumentEquipment::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getDocumentEquipments().forEach(de -> de.setEquipment(entity));
             documentEquipmentService.saveAll(entity.getDocumentEquipments());
         }
         // Сохраняем технические обслуживания по оборудованию
         if (entity.getMaintenanceList() != null) {
-            equipmentMaintenanceService.deleteByEquipmentAndIdNotIn(entity, entity.getMaintenanceList().stream().map(EquipmentMaintenance::getId).collect(Collectors.toList()));
+            equipmentMaintenanceService.deleteByEquipmentAndIdNotIn(entity, entity.getMaintenanceList().stream().map(EquipmentMaintenance::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getMaintenanceList().forEach(de -> de.setEquipment(entity));
             equipmentMaintenanceService.saveAll(entity.getMaintenanceList());
         }
         // Сохраняем поверки по оборудованию
         if (entity.getVerificationList() != null) {
-            equipmentVerificationService.deleteByEquipmentAndIdNotIn(entity, entity.getVerificationList().stream().map(EquipmentVerification::getId).collect(Collectors.toList()));
+            equipmentVerificationService.deleteByEquipmentAndIdNotIn(entity, entity.getVerificationList().stream().map(EquipmentVerification::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getVerificationList().forEach(de -> de.setEquipment(entity));
             equipmentVerificationService.saveAll(entity.getVerificationList());
         }

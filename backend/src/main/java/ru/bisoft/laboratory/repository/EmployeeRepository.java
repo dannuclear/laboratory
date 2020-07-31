@@ -9,10 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.bisoft.laboratory.domain.Employee;
 import ru.bisoft.laboratory.domain.Organization;
 
+import java.util.Optional;
+
 @Transactional(readOnly = true)
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Page<Employee> findByNameContainsIgnoreCase(@Param("name") String name, Pageable p);
 
     @EntityGraph(attributePaths = {"post", "department", "organization"})
     Page<Employee> findByOrganization(Organization organization, Pageable p);
+
+    @Override
+    @EntityGraph(attributePaths = {"post", "department", "organization"})
+    Optional<Employee> findById(Integer id);
 }

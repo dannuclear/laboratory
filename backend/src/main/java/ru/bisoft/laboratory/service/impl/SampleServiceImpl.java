@@ -13,6 +13,7 @@ import ru.bisoft.laboratory.repository.SampleRepository;
 import ru.bisoft.laboratory.service.SamplePropertyService;
 import ru.bisoft.laboratory.service.SampleService;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -57,7 +58,7 @@ public class SampleServiceImpl implements SampleService {
             if (entity.getProperties().size() == 0)
                 samplePropertyService.deleteBySample(entity);
             else
-                samplePropertyService.deleteBySampleAndIdNotIn(entity, entity.getProperties().stream().map(SampleProperty::getId).collect(Collectors.toList()));
+                samplePropertyService.deleteBySampleAndIdNotIn(entity, entity.getProperties().stream().map(SampleProperty::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getProperties().forEach(de -> de.setSample(entity));
             samplePropertyService.saveAll(entity.getProperties());
         }

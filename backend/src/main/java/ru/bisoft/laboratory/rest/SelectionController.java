@@ -6,8 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.bisoft.laboratory.domain.Selection;
+import ru.bisoft.laboratory.domain.SelectionEmployee;
+import ru.bisoft.laboratory.domain.SelectionEquipment;
 import ru.bisoft.laboratory.domain.SelectionSample;
 import ru.bisoft.laboratory.dto.PagedModel;
+import ru.bisoft.laboratory.repository.SelectionEmployeeRepository;
+import ru.bisoft.laboratory.repository.SelectionEquipmentRepository;
 import ru.bisoft.laboratory.repository.SelectionSampleRepository;
 import ru.bisoft.laboratory.service.SelectionService;
 
@@ -18,6 +22,8 @@ public class SelectionController {
 
     private final SelectionService selectionService;
     private final SelectionSampleRepository selectionSampleRepository;
+    private final SelectionEmployeeRepository selectionEmployeeRepository;
+    private final SelectionEquipmentRepository selectionEquipmentRepository;
 
     @GetMapping("/{selection}")
     public ResponseEntity<Selection> findOne(@PathVariable Selection selection) {
@@ -44,6 +50,20 @@ public class SelectionController {
     @DeleteMapping("/{selection}")
     public void delete(@PathVariable Selection selection) {
         selectionService.delete(selection);
+    }
+
+    @GetMapping("/{selection}/employees")
+    public ResponseEntity<Iterable<SelectionEmployee>> employees(Pageable pageable, @PathVariable Selection selection) {
+        Page<SelectionEmployee> result = selectionEmployeeRepository.findBySelection(selection, pageable);
+        result.forEach(ps -> ps.setSelection(null));
+        return ResponseEntity.ok(PagedModel.wrap(result));
+    }
+
+    @GetMapping("/{selection}/equipments")
+    public ResponseEntity<Iterable<SelectionEquipment>> equipments(Pageable pageable, @PathVariable Selection selection) {
+        Page<SelectionEquipment> result = selectionEquipmentRepository.findBySelection(selection, pageable);
+        result.forEach(ps -> ps.setSelection(null));
+        return ResponseEntity.ok(PagedModel.wrap(result));
     }
 
     @GetMapping("/{selection}/samples")

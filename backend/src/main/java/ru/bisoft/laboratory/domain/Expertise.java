@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -32,4 +33,7 @@ public class Expertise extends CustomEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_EMPLOYEE", referencedColumnName = "ID")
     private Employee employee;
+
+    @Transient
+    private List<ExpertiseDocument> expertiseDocuments;
 }

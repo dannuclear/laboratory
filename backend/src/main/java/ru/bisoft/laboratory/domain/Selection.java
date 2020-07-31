@@ -58,6 +58,16 @@ public class Selection extends CustomEntity {
     @JoinColumn(name = "ID_REQUEST", referencedColumnName = "ID")
     private Request request;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CONTROL", referencedColumnName = "ID")
+    private ControlType controlType;
+
+    @Transient
+    private List<SelectionEmployee> employees;
+
+    @Transient
+    private List<SelectionEquipment> equipments;
+
     @Transient
     private List<SelectionSample> samples;
 }

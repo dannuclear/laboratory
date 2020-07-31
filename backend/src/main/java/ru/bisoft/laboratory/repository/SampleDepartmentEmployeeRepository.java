@@ -24,7 +24,7 @@ public interface SampleDepartmentEmployeeRepository extends JpaRepository<Sample
 
     @Modifying
     @Transactional(readOnly = false)
-    void deleteBySampleSampleDepartment(SampleDepartment sampleDepartment);
+    void deleteBySampleDepartment(SampleDepartment sampleDepartment);
 
     @Modifying
     @Transactional(readOnly = false)

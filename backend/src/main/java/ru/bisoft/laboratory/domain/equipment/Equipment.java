@@ -1,5 +1,6 @@
 package ru.bisoft.laboratory.domain.equipment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import ru.bisoft.laboratory.domain.EmployeeEquipment;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -51,16 +53,18 @@ public class Equipment extends CustomEntity {
     private String characteristics;
 
     @Column(name = "VERIFICATION_INTERVAL")
-    private String verificationInterval;
+    private Integer verificationInterval;
 
     @Column(name = "MAINTENANCE_INTERVAL")
-    private String maintenanceInterval;
+    private Integer maintenanceInterval;
 
     @Column(name = "START_USE_DATE")
-    private String startUseDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private Date startUseDate;
 
     @Column(name = "END_USE_DATE")
-    private String endUseDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private Date endUseDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_EQUIPMENT_VERIFICATION", referencedColumnName = "ID", updatable = false, insertable = false)
