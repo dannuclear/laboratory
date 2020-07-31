@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import ru.bisoft.laboratory.domain.Employee;
 import ru.bisoft.laboratory.domain.Selection;
 import ru.bisoft.laboratory.domain.SelectionEmployee;
 import ru.bisoft.laboratory.repository.SelectionEmployeeRepository;
@@ -73,6 +74,14 @@ public class SelectionEmployeeServiceImpl implements SelectionEmployeeService {
         log.info("Извлекаем всех сотрудников отбора {} постранично {}", selection, pageable);
         Page<SelectionEmployee> result = selectionEmployeeRepository.findBySelection(selection, pageable);
         result.getContent().forEach(sp -> sp.setSelection(null));
+        return result;
+    }
+
+    @Override
+    public Page<SelectionEmployee> findByEmployee(Employee employee, Pageable pageable) {
+        log.info("Извлекаем все отборы сотрудника {} постранично {}", employee, pageable);
+        Page<SelectionEmployee> result = selectionEmployeeRepository.findByEmployee(employee, pageable);
+        result.getContent().forEach(sp -> sp.setEmployee(null));
         return result;
     }
 

@@ -39,14 +39,17 @@ public class ObjectClassController {
     }
 
     @PostMapping
-    public ObjectClass save(@Valid @RequestBody final ObjectClass objectClass) {
-        return objectClassService.save(objectClass);
+    public ObjectClass save(@Valid @RequestBody final ObjectClass newObjectClass) {
+        newObjectClass.setId(null);
+        ObjectClass result = objectClassService.save(newObjectClass);
+        result.setEquipments(null);
+        return result;
     }
 
     @PutMapping("/{objectClass}")
     public ObjectClass save(@PathVariable ObjectClass objectClass, @Valid @RequestBody ObjectClass newObjectClass) {
-        objectClassService.save(newObjectClass);
-        return newObjectClass;
+        ObjectClass result = objectClassService.save(newObjectClass);
+        return result;
     }
 
     @GetMapping("/{objectClass}/documents")

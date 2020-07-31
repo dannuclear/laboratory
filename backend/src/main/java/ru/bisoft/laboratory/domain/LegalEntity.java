@@ -7,6 +7,7 @@ import lombok.ToString;
 import ru.bisoft.validator.annotation.INNValid;
 
 import javax.persistence.*;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -45,4 +46,7 @@ public class LegalEntity {
      */
     @Column(name = "FACTUAL_ADDRESS", length = 500)
     private String factualAddress;
+
+    @Transient
+    private List<Request> requests;
 }

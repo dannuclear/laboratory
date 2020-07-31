@@ -12,10 +12,10 @@ import ru.bisoft.laboratory.domain.SelectionEmployee;
 
 @Transactional(readOnly = true)
 public interface SelectionEmployeeRepository extends JpaRepository<SelectionEmployee, Integer> {
-	@EntityGraph(attributePaths = { "selection" })
+	@EntityGraph(attributePaths = { "selection.request" })
 	Page<SelectionEmployee> findByEmployee(Employee employee, Pageable p);
 
-	@EntityGraph(attributePaths = { "employee" })
+	@EntityGraph(attributePaths = { "employee.organization", "employee.post", "employee.department" })
 	Page<SelectionEmployee> findBySelection(Selection selection, Pageable p);
 
 	@Modifying

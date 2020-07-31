@@ -20,6 +20,15 @@ public class SelectionEmployee extends CustomEntity {
     @GeneratedValue(generator = "SELECTION_EMPLOYEE_GEN_ID", strategy = SEQUENCE)
     private Integer id;
 
+    @Column(name = "FIO", length = 200)
+    private String fio;
+
+    @Column(name = "POST", length = 200)
+    private String post;
+
+    @Column(name = "PARTICIPANT_TYPE")
+    private Integer participantType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_SELECTION", referencedColumnName = "ID")
     private Selection selection;

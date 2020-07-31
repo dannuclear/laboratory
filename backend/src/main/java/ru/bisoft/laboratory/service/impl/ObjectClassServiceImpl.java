@@ -17,6 +17,7 @@ import ru.bisoft.laboratory.repository.ObjectClassPropertyRepository;
 import ru.bisoft.laboratory.repository.ObjectClassRepository;
 import ru.bisoft.laboratory.service.ObjectClassService;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -62,7 +63,7 @@ public class ObjectClassServiceImpl implements ObjectClassService {
             if (entity.getDocuments().size() == 0)
                 objectClassDocumentRepository.deleteByObjectClass(entity);
             else
-                objectClassDocumentRepository.deleteByObjectClassAndIdNotIn(entity, entity.getDocuments().stream().map(ObjectClassDocument::getId).collect(Collectors.toList()));
+                objectClassDocumentRepository.deleteByObjectClassAndIdNotIn(entity, entity.getDocuments().stream().map(ObjectClassDocument::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getDocuments().forEach(de -> de.setObjectClass(entity));
             objectClassDocumentRepository.saveAll(entity.getDocuments());
         }
@@ -72,7 +73,7 @@ public class ObjectClassServiceImpl implements ObjectClassService {
             if (entity.getProperties().size() == 0)
                 objectClassPropertyRepository.deleteByObjectClass(entity);
             else
-                objectClassPropertyRepository.deleteByObjectClassAndIdNotIn(entity, entity.getProperties().stream().map(ObjectClassProperty::getId).collect(Collectors.toList()));
+                objectClassPropertyRepository.deleteByObjectClassAndIdNotIn(entity, entity.getProperties().stream().map(ObjectClassProperty::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getProperties().forEach(de -> de.setObjectClass(entity));
             objectClassPropertyRepository.saveAll(entity.getProperties());
         }
@@ -82,7 +83,7 @@ public class ObjectClassServiceImpl implements ObjectClassService {
             if (entity.getEquipments().size() == 0)
                 objectClassEquipmentRepository.deleteByObjectClass(entity);
             else
-                objectClassEquipmentRepository.deleteByObjectClassAndIdNotIn(entity, entity.getEquipments().stream().map(ObjectClassEquipment::getId).collect(Collectors.toList()));
+                objectClassEquipmentRepository.deleteByObjectClassAndIdNotIn(entity, entity.getEquipments().stream().map(ObjectClassEquipment::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getEquipments().forEach(de -> de.setObjectClass(entity));
             objectClassEquipmentRepository.saveAll(entity.getEquipments());
         }

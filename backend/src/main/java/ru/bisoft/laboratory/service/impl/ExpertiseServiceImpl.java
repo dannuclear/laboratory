@@ -13,6 +13,7 @@ import ru.bisoft.laboratory.repository.ExpertiseRepository;
 import ru.bisoft.laboratory.service.ExpertiseDocumentService;
 import ru.bisoft.laboratory.service.ExpertiseService;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -53,7 +54,7 @@ public class ExpertiseServiceImpl implements ExpertiseService {
         Expertise result = expertiseRepository.save(entity);
         // Сохраняем документы по оборудованию
         if (entity.getExpertiseDocuments() != null) {
-            expertiseDocumentService.deleteByExpertiseAndIdNotIn(entity, entity.getExpertiseDocuments().stream().map(ExpertiseDocument::getId).collect(Collectors.toList()));
+            expertiseDocumentService.deleteByExpertiseAndIdNotIn(entity, entity.getExpertiseDocuments().stream().map(ExpertiseDocument::getId).filter(Objects::nonNull).collect(Collectors.toList()));
             entity.getExpertiseDocuments().forEach(de -> de.setExpertise(entity));
             expertiseDocumentService.saveAll(entity.getExpertiseDocuments());
         }
