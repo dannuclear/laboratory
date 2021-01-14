@@ -20,7 +20,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
  */
 @Entity
 @Table(name = "SELECTION")
-@ToString(exclude = {"samples"})
+@ToString(exclude = {"samples", "employees", "equipments"})
 @Getter
 @Setter
 @NoArgsConstructor

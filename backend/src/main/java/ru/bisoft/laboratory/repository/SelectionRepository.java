@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface SelectionRepository extends JpaRepository<Selection, Integer> {
 //	Page<Unit> findByNameContainsIgnoreCase(@Param("name") String name, Pageable p);
     @Override
-    @EntityGraph(attributePaths = {"request.declarant"})
+    @EntityGraph(attributePaths = {"request.declarant", "controlType"})
     Optional<Selection> findById(Integer id);
 
     @Override
-    @EntityGraph(attributePaths = {"request.declarant"})
+    @EntityGraph(attributePaths = {"request.declarant", "controlType"})
     Page<Selection> findAll(Pageable pageable);
 }
